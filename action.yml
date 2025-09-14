@@ -1,0 +1,39 @@
+name: 'ADR Index Generator'
+description: 'Generate or update index.md for Architecture Decision Records using adrctl'
+author: 'alexlovelltroy'
+
+inputs:
+  directory:
+    description: 'ADR directory path'
+    required: false
+    default: 'ADRs'
+  out:
+    description: 'Output path for index file'
+    required: false
+  project-name:
+    description: 'Project name to display in index header'
+    required: false
+  project-url:
+    description: 'Project URL to link in index header'
+    required: false
+
+outputs:
+  index-path:
+    description: 'Path to the generated index file'
+    value: ${{ steps.Generate_ADR_index.outputs.index-path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Generate ADR index
+      run: ${{ github.action_path }}/action.sh
+      shell: bash
+      env:
+        INPUT_DIRECTORY: ${{ inputs.directory }}
+        INPUT_OUT: ${{ inputs.out }}
+        INPUT_PROJECT_NAME: ${{ inputs.project-name }}
+        INPUT_PROJECT_URL: ${{ inputs.project-url }}
+
+branding:
+  icon: 'file-text'
+  color: 'blue'
